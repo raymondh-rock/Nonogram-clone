@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bxi6hb72tg6d7"]
+
+[ext_resource type="Script" uid="uid://d135n47a3d6a7" path="res://game.gd" id="1_80nbo"]
+
+[node name="Game" type="Control" unique_id=494073812]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_80nbo")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1672313936]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(3.2247603e-06, 0.41572174, 0.59821683, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1964373739]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainHBox" type="HBoxContainer" parent="CenterContainer" unique_id=59516528]
+layout_mode = 2
+
+[node name="RowLabels" type="VBoxContainer" parent="CenterContainer/MainHBox" unique_id=372424485]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CenterContainer/MainHBox/RowLabels" unique_id=85930637]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="GridWrapper" type="VBoxContainer" parent="CenterContainer/MainHBox" unique_id=1800950321]
+layout_mode = 2
+
+[node name="ColLabels" type="HBoxContainer" parent="CenterContainer/MainHBox/GridWrapper" unique_id=1754777948]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 4
+
+[node name="Crosshairs" type="Control" parent="CenterContainer/MainHBox/GridWrapper" unique_id=538488982]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/MainHBox/GridWrapper" unique_id=1988867670]
+layout_mode = 2
+columns = 10
+
+[node name="ClearButton" type="Button" parent="CenterContainer/MainHBox/GridWrapper" unique_id=1018926742]
+layout_mode = 2
+text = "Clear"
+
+[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/MainHBox/GridWrapper" unique_id=2110106253]
+layout_mode = 2
+
+[connection signal="pressed" from="CenterContainer/MainHBox/GridWrapper/ClearButton" to="." method="_on_clear_button_pressed"]
