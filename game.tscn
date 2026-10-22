@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bxi6hb72tg6d7"]
 
 [ext_resource type="Script" uid="uid://d135n47a3d6a7" path="res://game.gd" id="1_80nbo"]
+[ext_resource type="AudioStream" uid="uid://dfjlq0kgyp8mf" path="res://audio/lclick.wav" id="2_e2o6t"]
 
 [node name="Game" type="Control" unique_id=494073812]
 layout_mode = 3
@@ -67,5 +68,8 @@ text = "Clear"
 
 [node name="ProgressBar" type="ProgressBar" parent="CenterContainer/MainHBox/GridWrapper" unique_id=2110106253]
 layout_mode = 2
+
+[node name="Lclick" type="AudioStreamPlayer2D" parent="CenterContainer" unique_id=1549794422]
+stream = ExtResource("2_e2o6t")
 
 [connection signal="pressed" from="CenterContainer/MainHBox/GridWrapper/ClearButton" to="." method="_on_clear_button_pressed"]

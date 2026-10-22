@@ -6,6 +6,7 @@ extends Control
 @onready var row_labels_container: VBoxContainer = $CenterContainer/MainHBox/RowLabels
 @onready var col_labels_container: HBoxContainer = $CenterContainer/MainHBox/GridWrapper/ColLabels
 @onready var progress_bar: ProgressBar = $CenterContainer/MainHBox/GridWrapper/ProgressBar
+@onready var Lclick= $CenterContainer/Lclick
 
 
 var board_data = []
@@ -52,6 +53,7 @@ func _ready() -> void:
 	
 	create_legend_labels()
 	create_board()
+	#timeout only nessecary because board build animation takes a second
 	await get_tree().create_timer(1.5).timeout
 	draw_center_dividers()
 	
@@ -67,6 +69,7 @@ func create_board():
 			# Connect the gui_input signal to handle mouse clicks on the button
 			btn.gui_input.connect(_on_button_gui_input.bind(btn))
 			grid_container.add_child(btn)
+			# Not nessecary just to show how the grid is built
 			await get_tree().create_timer(0.01).timeout
 			
 
@@ -78,7 +81,7 @@ func create_legend_labels() -> void:
 	var h_sep = grid_container.get_theme_constant("h_separation")
 	var v_sep = grid_container.get_theme_constant("v_separation")
 
-	# If h_sep returns 0, set it to GridContainer's default override (usually 4px)
+	# If h_sep returns 0, set it to GridContainer's default override 
 	if h_sep == 0:
 		h_sep = 4
 
@@ -94,6 +97,7 @@ func create_legend_labels() -> void:
 		
 		# Set exact width matching each button column + grid gap
 		lbl.custom_minimum_size = Vector2(button_size.x, 0)
+		await get_tree().create_timer(0.05).timeout
 		col_labels_container.add_child(lbl)
 
 	# Row Labels
@@ -110,7 +114,7 @@ func create_legend_labels() -> void:
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		lbl.custom_minimum_size = Vector2(0, button_size.y)
-		await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.05).timeout
 		row_labels_container.add_child(lbl)
 		
 		
@@ -122,7 +126,7 @@ func draw_center_dividers() -> void:
 	for child in crosshairs.get_children():
 		child.queue_free()
 
-	# Match crosshairs directly to GridContainer's position and size
+	# Match crosshairs to GridContainer's position and size
 	crosshairs.global_position = grid_container.global_position
 	crosshairs.size = grid_container.size
 
@@ -138,7 +142,7 @@ func draw_center_dividers() -> void:
 	if h_sep == 0: h_sep = 4
 	if v_sep == 0: v_sep = 4
 
-	# Calculate split center relative to crosshairs (0,0)
+	# Calculate center relative to crosshairs 
 	var center_x_pos = half_x * (button_size.x + h_sep) - (h_sep / 2.0)
 	var center_y_pos = half_y * (button_size.y + v_sep) - (v_sep / 2.0)
 
@@ -150,7 +154,7 @@ func draw_center_dividers() -> void:
 	v_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	crosshairs.add_child(v_line)
 
-	# 2. Horizontal Center Line
+	# horizontal crosshair
 	var h_line = ColorRect.new()
 	h_line.color = line_color
 	h_line.size = Vector2(grid_container.size.x, line_thickness)
@@ -212,12 +216,13 @@ func handle_cell_action(x: int, y: int, btn: Button, mouse_button: int) -> void:
 		var correct_val: int = solution_board[x][y]
 		
 		if correct_val == 1:
+			Lclick.play()
 			new_val = 1 
 		else:
 			new_val = -1  
 			
 	elif mouse_button == MOUSE_BUTTON_RIGHT:
-		# Toggle between Right-Clicked Flag (2 -> Grey) and Empty (0 -> Normal)
+		# Toggle between rclick (2=Grey) and empty (0=Normal)
 		if current_val == 2:
 			new_val = 0
 		else:
@@ -232,7 +237,7 @@ func handle_cell_action(x: int, y: int, btn: Button, mouse_button: int) -> void:
 			filled_correct += 1
 			progress_bar.value = filled_correct
 			if filled_correct == total_correct:
-				print("Puzzle complete!")
+				print("Nonogram complete!")
 
 func clear_board() -> void:
 	# 1. Reset board_data values to default (0)
@@ -250,18 +255,18 @@ func clear_board() -> void:
 func update_cell_ui(btn: Button, value: int) -> void:
 	match value:
 		0:
-			# Normal / Unclicked state
+			# Normal
 			btn.modulate = Color.WHITE
 			btn.text = ""
 		1:
-			# Correct Left Click /Green
+			# Correct Lclick=green
 			btn.modulate = Color.GREEN
 			btn.text = "1"
 		-1:
-			# Incorrect Left Click /Red
+			# Incorrect Lclick=red
 			btn.modulate = Color.RED
 			btn.text = "X"
 		2:
-			# Right Click Flag / Grey
+			# Rclick=grey
 			btn.modulate = Color.GRAY
 			btn.text = "?"
