@@ -7,6 +7,7 @@ extends Control
 @onready var col_labels_container: HBoxContainer = $CenterContainer/MainHBox/GridWrapper/ColLabels
 @onready var progress_bar: ProgressBar = $CenterContainer/MainHBox/GridWrapper/ProgressBar
 @onready var Lclick= $CenterContainer/Lclick
+@onready var Lclickred= $CenterContainer/Lclickred
 
 
 var board_data = []
@@ -219,7 +220,9 @@ func handle_cell_action(x: int, y: int, btn: Button, mouse_button: int) -> void:
 			Lclick.play()
 			new_val = 1 
 		else:
+			Lclickred.play()
 			new_val = -1  
+			
 			
 	elif mouse_button == MOUSE_BUTTON_RIGHT:
 		# Toggle between rclick (2=Grey) and empty (0=Normal)
